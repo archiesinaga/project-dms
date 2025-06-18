@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  STANDARDIZATION
+}
+
+enum DocumentStatus {
+  DRAFTED
+  SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  image         String?
+  password      String
+  role          Role          @default(STANDARDIZATION)
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  documents     Document[]     // Documents created by the user
+  approvals     Approval[]     // Document approvals made by the user
+  notifications Notification[]
+  revisions     DocumentRevision[] // Document revisions made by the user
+}
+
+model Document {
+  id          String         @id @default(uuid())
+  title       String
+  description String         @default("")
+  filePath    String
+  status      DocumentStatus @default(DRAFTED)
+  uploadedAt  DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  creator     User          @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  approvals   Approval[]
+  revisions   DocumentRevision[]
+  fileType    String?        // Store file type (pdf, doc, docx)
+  fileSize    Int?           // Store file size in bytes
+  version     Int            @default(1) // Document version
+}
+
+model Approval {
+  id         String         @id @default(uuid())
+  document   Document       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId String
+  approver   User          @relation(fields: [approverId], references: [id])
+  approverId String
+  status     DocumentStatus
+  comment    String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model DocumentRevision {
+  id          String   @id @default(uuid())
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId  String
+  editor      User     @relation(fields: [editorId], references: [id])
+  editorId    String
+  version     Int
+  oldFilePath String?  // Path to previous version file
+  newFilePath String   // Path to new version file
+  comment     String?  // Revision comment/notes
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  message   String
+  type      String   @default("INFO") // INFO, WARNING, SUCCESS, ERROR
+  relatedId String?  // ID of related document or approval
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
