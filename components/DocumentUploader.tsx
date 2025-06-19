@@ -47,14 +47,14 @@ export default function DocumentUploader() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-8"
       >
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-6">
-          <div className="w-16 h-16 mx-auto mb-4 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
-            <X className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+          <div className="w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full flex items-center justify-center">
+            <X className="w-8 h-8 text-yellow-600" />
           </div>
-          <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+          <h3 className="text-lg font-semibold text-yellow-800 mb-2">
             Upload Permission Required
           </h3>
-          <p className="text-yellow-700 dark:text-yellow-300">
+          <p className="text-yellow-700">
             You don't have permission to upload documents. Only Admin users can upload documents.
           </p>
         </div>
@@ -127,27 +127,27 @@ export default function DocumentUploader() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
+      className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg border border-gray-200"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-          <Upload className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+          <Upload className="w-5 h-5 text-blue-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Upload Document</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Upload Document</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* File Upload Area */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
             Document File
           </label>
           <div
             {...getRootProps()}
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 ${
               isDragActive
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-300 hover:border-gray-400'
             }`}
           >
             <input {...getInputProps()} />
@@ -160,8 +160,8 @@ export default function DocumentUploader() {
                 >
                   <File className="w-8 h-8 text-green-600" />
                   <div className="text-left">
-                    <p className="font-medium text-gray-900 dark:text-white">{file.name}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="font-medium text-gray-900">{file.name}</p>
+                    <p className="text-sm text-gray-500">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
@@ -184,10 +184,10 @@ export default function DocumentUploader() {
                 >
                   <Upload className="w-12 h-12 mx-auto text-gray-400" />
                   <div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-white">
+                    <p className="text-lg font-medium text-gray-900">
                       {isDragActive ? 'Drop the file here' : 'Drag & drop a file here'}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500">
                       or click to browse (PDF, DOC, DOCX - Max 5MB)
                     </p>
                   </div>
@@ -200,7 +200,7 @@ export default function DocumentUploader() {
         {/* Form Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Document Title *
             </label>
             <input
@@ -208,19 +208,19 @@ export default function DocumentUploader() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 transition-all duration-200"
               placeholder="Enter document title"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Document Status
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as "DRAFTED" | "SUBMITTED")}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 transition-all duration-200"
             >
               <option value="DRAFTED">Save as Draft</option>
               <option value="SUBMITTED">Submit for Approval</option>
@@ -229,14 +229,14 @@ export default function DocumentUploader() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200 resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 transition-all duration-200 resize-none"
             placeholder="Enter document description (optional)"
           />
         </div>
@@ -249,10 +249,10 @@ export default function DocumentUploader() {
             className="space-y-2"
           >
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-400">Uploading...</span>
-              <span className="text-gray-900 dark:text-white font-medium">{uploadProgress}%</span>
+              <span className="text-gray-600">Uploading...</span>
+              <span className="text-gray-900 font-medium">{uploadProgress}%</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <motion.div
                 className="bg-blue-600 h-2 rounded-full"
                 initial={{ width: 0 }}

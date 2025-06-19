@@ -48,9 +48,9 @@ export default function DashboardStats() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+          <div key={i} className="bg-white rounded-xl p-6 animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div className="h-8 bg-gray-200 rounded w-1/2"></div>
           </div>
         ))}
       </div>
@@ -65,14 +65,14 @@ export default function DashboardStats() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300"
+          className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <p className="text-sm font-medium text-gray-600">
                 {stat.title}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+              <p className="text-2xl font-bold text-gray-900 mt-1">
                 {stat.value}
               </p>
             </div>
@@ -86,12 +86,12 @@ export default function DashboardStats() {
               stat.changeType === 'negative' ? 'text-red-500' : 'text-gray-500'
             }`} />
             <span className={`text-sm font-medium ml-1 ${
-              stat.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : 
-              stat.changeType === 'negative' ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'
+              stat.changeType === 'positive' ? 'text-green-600' : 
+              stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
             }`}>
               {stat.change}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">from last month</span>
+            <span className="text-sm text-gray-500 ml-1">from last month</span>
           </div>
         </motion.div>
       ))}

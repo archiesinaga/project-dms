@@ -151,11 +151,11 @@ export default function DocumentList() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
-          <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
+        <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+          <XCircle className="w-8 h-8 text-red-600" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Error loading documents</h3>
-        <p className="text-gray-500 dark:text-gray-400 mb-4">Failed to load documents. Please try again.</p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading documents</h3>
+        <p className="text-gray-500 mb-4">Failed to load documents. Please try again.</p>
         <button 
           onClick={() => queryClient.invalidateQueries(['documents'])}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -172,16 +172,16 @@ export default function DocumentList() {
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+        className="bg-white rounded-xl shadow-lg border border-gray-200 p-6"
       >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Filter className="w-5 h-5 text-gray-500" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Advanced Filters</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Advanced Filters</h3>
           </div>
           <button
             onClick={clearFilters}
-            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
           >
             Clear all
           </button>
@@ -195,14 +195,14 @@ export default function DocumentList() {
               placeholder="Search documents..."
               value={filters.search}
               onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           
           <select
             value={filters.status}
             onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Status</option>
             <option value="DRAFTED">Drafted</option>
@@ -217,20 +217,20 @@ export default function DocumentList() {
             placeholder="Search by uploader..."
             value={filters.uploader}
             onChange={(e) => setFilters(prev => ({ ...prev, uploader: e.target.value }))}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
 
           <input
             type="date"
             value={filters.date}
             onChange={(e) => setFilters(prev => ({ ...prev, date: e.target.value }))}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
 
           <select
             value={filters.fileType}
             onChange={(e) => setFilters(prev => ({ ...prev, fileType: e.target.value }))}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Types</option>
             <option value="application/pdf">PDF</option>
@@ -245,11 +245,11 @@ export default function DocumentList() {
 
       {/* Results Summary */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-600">
           Showing {filteredDocuments.length} of {documents.length} documents
         </p>
         {Object.values(filters).some(filter => filter !== '') && (
-          <p className="text-sm text-blue-600 dark:text-blue-400">
+          <p className="text-sm text-blue-600">
             Filters applied
           </p>
         )}
@@ -266,11 +266,11 @@ export default function DocumentList() {
           animate={{ opacity: 1 }}
           className="text-center py-16"
         >
-          <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+          <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
             <Search className="w-12 h-12 text-gray-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No documents found</h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-4">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No documents found</h3>
+          <p className="text-gray-500 mb-4">
             {Object.values(filters).some(filter => filter !== '') 
               ? 'Try adjusting your search or filter criteria' 
               : 'No documents have been uploaded yet'
@@ -295,14 +295,14 @@ export default function DocumentList() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
                       {doc.title}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    <p className="text-sm text-gray-600 line-clamp-2">
                       {doc.description}
                     </p>
                   </div>
@@ -310,20 +310,20 @@ export default function DocumentList() {
                 </div>
                 
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                     v{doc.version}
                   </span>
-                  <span className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
                     {getFileTypeLabel(doc.fileType)}
                   </span>
                   {doc.fileSize && (
-                    <span className="text-xs bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-2 py-1 rounded-full">
+                    <span className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">
                       {formatFileSize(doc.fileSize)}
                     </span>
                   )}
                 </div>
                 
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                   <span>By {doc.creator?.name || 'Unknown'}</span>
                   <span>{formatDate(doc.uploadedAt)}</span>
                 </div>
@@ -351,7 +351,7 @@ export default function DocumentList() {
                       id={doc.id}
                       variant="icon"
                       onSuccess={handleDeleteSuccess}
-                      className="p-2 text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      className="p-2 text-gray-600 hover:text-red-600 transition-colors"
                     />
                   )}
                 </div>
@@ -367,11 +367,11 @@ export default function DocumentList() {
 // Helper components
 const DocumentStatusBadge = ({ status }: { status: DocumentStatus }) => {
   const statusConfig = {
-    DRAFTED: { color: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200', icon: null },
-    SUBMITTED: { color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200', icon: null },
-    PENDING: { color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200', icon: null },
-    APPROVED: { color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200', icon: CheckCircle },
-    REJECTED: { color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200', icon: XCircle }
+    DRAFTED: { color: 'bg-gray-100 text-gray-800', icon: null },
+    SUBMITTED: { color: 'bg-blue-100 text-blue-800', icon: null },
+    PENDING: { color: 'bg-yellow-100 text-yellow-800', icon: null },
+    APPROVED: { color: 'bg-green-100 text-green-800', icon: CheckCircle },
+    REJECTED: { color: 'bg-red-100 text-red-800', icon: XCircle }
   };
   
   const config = statusConfig[status];

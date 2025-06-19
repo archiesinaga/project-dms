@@ -10,18 +10,18 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+*:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 html,
@@ -46,13 +46,6 @@ a {
   text-decoration: none;
 }
 
-/* Smooth transitions for all interactive elements */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -72,25 +65,7 @@ a {
   background: #94a3b8;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: #1e293b;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* Focus styles for accessibility */
-*:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Custom animations */
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -135,42 +110,33 @@ a {
 }
 
 /* Utility classes */
-.line-clamp-2 {
+.line-clamp-2, .line-clamp-3 {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  /* Standard property for compatibility */
+}
+
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
   line-clamp: 2;
 }
 
 .line-clamp-3 {
-  display: -webkit-box;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  /* Standard property for compatibility */
   line-clamp: 3;
 }
 
-/* Glass morphism effect */
+/* Glass effect */
 .glass {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.dark .glass {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 /* Gradient backgrounds */
-.gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.gradient-bg-blue {
+.gradient-bg,
+.gradient-bg-blue,
+.gradient-bg-purple {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
@@ -178,11 +144,7 @@ a {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
-.gradient-bg-purple {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Enhanced form styles */
+/* Forms */
 .form-input {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -200,21 +162,8 @@ a {
   background-color: #ffffff;
 }
 
-.dark .form-input {
-  border-color: #4b5563;
-  background-color: #374151;
-  color: #f9fafb;
-}
-
-.dark .form-input:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 2px #3b82f6;
-  background-color: #374151;
-}
-
-.btn-primary {
-  background-color: #2563eb;
-  color: #ffffff;
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-danger {
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
@@ -222,6 +171,11 @@ a {
   transition: all 0.2s;
   border: none;
   cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -237,13 +191,6 @@ a {
 .btn-secondary {
   background-color: #4b5563;
   color: #ffffff;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-secondary:hover {
@@ -259,13 +206,6 @@ a {
 .btn-danger {
   background-color: #dc2626;
   color: #ffffff;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
 }
 
 .btn-danger:hover {
@@ -278,7 +218,7 @@ a {
   box-shadow: 0 0 0 2px #f87171, 0 0 0 4px #ffffff;
 }
 
-/* Card styles */
+/* Cards */
 .card {
   background-color: #ffffff;
   border-radius: 0.75rem;
@@ -290,11 +230,6 @@ a {
 
 .card:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.dark .card {
-  background-color: #1f2937;
-  border-color: #374151;
 }
 
 .card-header {
@@ -310,10 +245,6 @@ a {
   color: #111827;
 }
 
-.dark .card-title {
-  color: #f9fafb;
-}
-
 /* Status badges */
 .status-badge {
   padding: 0.25rem 0.75rem;
@@ -327,19 +258,9 @@ a {
   color: #374151;
 }
 
-.dark .status-drafted {
-  background-color: #374151;
-  color: #e5e7eb;
-}
-
 .status-submitted {
   background-color: #dbeafe;
   color: #1e40af;
-}
-
-.dark .status-submitted {
-  background-color: #1e3a8a;
-  color: #bfdbfe;
 }
 
 .status-pending {
@@ -347,27 +268,12 @@ a {
   color: #92400e;
 }
 
-.dark .status-pending {
-  background-color: #92400e;
-  color: #fde047;
-}
-
 .status-approved {
   background-color: #dcfce7;
   color: #166534;
 }
 
-.dark .status-approved {
-  background-color: #166534;
-  color: #86efac;
-}
-
 .status-rejected {
   background-color: #fee2e2;
   color: #991b1b;
-}
-
-.dark .status-rejected {
-  background-color: #991b1b;
-  color: #fca5a5;
 }
