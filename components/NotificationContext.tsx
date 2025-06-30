@@ -1,6 +1,10 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { Bell, CheckCircle, Info, AlertTriangle, XCircle } from "lucide-react";
+import { toast, Toaster } from 'sonner';
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Notification {
   id: string;
@@ -15,28 +19,43 @@ interface NotificationContextType {
   unreadCount: number;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
-  addNotification: (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => void;
-  fetchNotifications: () => void;
-  notify: (notification: { message: string; type: 'INFO' | 'WARNING' | 'SUCCESS' | 'ERROR' }) => void;
+  addNotification: (message: string, type: Notification['type']) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+// Helper function to get the appropriate icon based on notification type
+const getNotificationIcon = (type: Notification['type']) => {
+  switch (type) {
+    case 'SUCCESS':
+      return <CheckCircle className="h-4 w-4 text-green-500" />;
+    case 'WARNING':
+      return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+    case 'ERROR':
+      return <XCircle className="h-4 w-4 text-red-500" />;
+    case 'INFO':
+    default:
+      return <Info className="h-4 w-4 text-blue-500" />;
+  }
+};
+
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchNotifications();
+    }
+  }, [session]);
 
   const fetchNotifications = async () => {
-    if (!session?.user) return;
-
     try {
-      const res = await fetch('/api/notifications');
-      if (res.ok) {
-        const data = await res.json();
-        setNotifications(data);
-        setUnreadCount(data.filter((n: Notification) => !n.read).length);
-      }
+      const response = await fetch('/api/notifications');
+      const data = await response.json();
+      setNotifications(data);
+      setUnreadCount(data.filter((n: Notification) => !n.read).length);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
     }
@@ -44,18 +63,16 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
   const markAsRead = async (id: string) => {
     try {
-      const res = await fetch(`/api/notifications/${id}`, {
+      await fetch(`/api/notifications/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ read: true }),
       });
-
-      if (res.ok) {
-        setNotifications(prev => 
-          prev.map(n => n.id === id ? { ...n, read: true } : n)
-        );
-        setUnreadCount(prev => Math.max(0, prev - 1));
-      }
+      
+      setNotifications(prev => 
+        prev.map(n => n.id === id ? { ...n, read: true } : n)
+      );
+      setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
     }
@@ -63,46 +80,45 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
   const markAllAsRead = async () => {
     try {
-      const res = await fetch('/api/notifications', {
+      await fetch('/api/notifications', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ read: true }),
       });
-
-      if (res.ok) {
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-        setUnreadCount(0);
-      }
+      
+      setNotifications(prev => 
+        prev.map(n => ({ ...n, read: true }))
+      );
+      setUnreadCount(0);
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
     }
   };
 
-  const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
+  const addNotification = (message: string, type: Notification['type']) => {
     const newNotification: Notification = {
-      ...notification,
       id: Date.now().toString(),
+      message,
+      type,
       createdAt: new Date(),
       read: false,
     };
+
     setNotifications(prev => [newNotification, ...prev]);
     setUnreadCount(prev => prev + 1);
-  };
 
-  const notify = (notification: { message: string; type: 'INFO' | 'WARNING' | 'SUCCESS' | 'ERROR' }) => {
-    addNotification(notification);
+    // Show toast notification
+    toast(message, {
+      icon: getNotificationIcon(type),
+      className: cn(
+        "bg-white",
+        type === 'SUCCESS' && "border-green-500",
+        type === 'WARNING' && "border-yellow-500",
+        type === 'ERROR' && "border-red-500",
+        type === 'INFO' && "border-blue-500"
+      )
+    });
   };
-
-  useEffect(() => {
-    if (session?.user) {
-      fetchNotifications();
-      
-      // Set up polling for new notifications
-      const interval = setInterval(fetchNotifications, 30000); // Check every 30 seconds
-      
-      return () => clearInterval(interval);
-    }
-  }, [session]);
 
   return (
     <NotificationContext.Provider value={{
@@ -111,9 +127,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       markAsRead,
       markAllAsRead,
       addNotification,
-      fetchNotifications,
-      notify,
     }}>
+      <Toaster />
       {children}
     </NotificationContext.Provider>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from "next-auth/react";
-import { Role } from '@/types/prisma';
+import { Role } from '@prisma/client';
 
 interface RoleCheck {
   isAdmin: boolean;
@@ -18,22 +18,18 @@ interface RoleCheck {
 
 export function useRoleCheck(): RoleCheck {
   const { data: session } = useSession();
-  const userRole = session?.user?.role as Role | null;
+  const userRole = session?.user?.role as Role;
 
   return {
-    isAdmin: userRole === 'ADMIN',
-    isManager: userRole === 'MANAGER',
-    isStandardization: userRole === 'STANDARDIZATION',
-    
-    // Document permissions
-    canEditDocuments: userRole === 'ADMIN',
-    canUploadDocuments: userRole === 'ADMIN',
-    canDeleteDocuments: userRole === 'ADMIN',
-    canApproveDocuments: userRole === 'MANAGER' || userRole === 'STANDARDIZATION',
-    canRejectDocuments: userRole === 'MANAGER' || userRole === 'STANDARDIZATION',
-    canViewDocuments: userRole === 'ADMIN' || userRole === 'MANAGER' || userRole === 'STANDARDIZATION',
-    
-    // System permissions
-    canManageUsers: userRole === 'ADMIN',
+    isAdmin: userRole === Role.ADMIN,
+    isManager: userRole === Role.MANAGER,
+    isStandardization: userRole === Role.STANDARDIZATION,
+    canEditDocuments: userRole === Role.ADMIN,
+    canUploadDocuments: userRole === Role.ADMIN,
+    canDeleteDocuments: userRole === Role.ADMIN,
+    canApproveDocuments: userRole === Role.MANAGER || userRole === Role.STANDARDIZATION,
+    canRejectDocuments: userRole === Role.MANAGER || userRole === Role.STANDARDIZATION,
+    canViewDocuments: true, // All authenticated users can view documents
+    canManageUsers: userRole === Role.ADMIN,
   };
 }
